@@ -13,3 +13,4 @@ Results may still differ because of:
 * Software versions: Different library, compiler, or driver versions may change algorithms or implementations.
 * Parallel processing: Different execution orders can produce slightly different floating-point results.
 * Non-deterministic operations: Some GPU operations are inherently non-deterministic.
+

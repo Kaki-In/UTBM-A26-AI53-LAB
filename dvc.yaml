@@ -26,7 +26,6 @@ stages:
       - train.random_state
     outs:
       - data/processed
-      - data/manifests
       - reports/data_summary.json:
           cache: false
 
@@ -39,7 +38,6 @@ stages:
       - src/reproducibility.py
       - src/provenance.py
       - data/processed
-      - data/manifests
       - uv.lock
       - pyproject.toml
     params:

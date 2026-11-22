@@ -169,7 +169,7 @@ def main() -> None:
         # run_manifest = ...
         # training_identity = ...
         
-        run_manifest = write_run_manifest(params, str(device), run.info.run_id, train_manifest_path)
+        run_manifest = write_run_manifest(params, str(device), run.info.run_id, Path("reports/run_manifest.json"))
         training_identity = run_manifest["data"]["training_data_identity"]
 
         # -----------------------------------------------------

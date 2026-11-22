@@ -1,7 +1,7 @@
 {
   "classes": [
-    "healthy",
     "angular_leaf_spot",
+    "healthy",
     "bean_rust"
   ],
   "splits": {

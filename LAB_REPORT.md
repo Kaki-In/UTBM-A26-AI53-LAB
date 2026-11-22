@@ -130,3 +130,12 @@ Because it will simply train using rotations and flipping of the images, so the 
 
 
 
+| Run | Controlled change | Val. Accuracy | Val. Macro-F1 | Training time (s) | MLflow Run ID |
+|---|---|---|---|---|---|
+| A | Baseline | 0.639 | 0.625 | 7.92 | ac903503e3134477b9c66a5c278c518a |
+| B | `learning_rate` = 0.0003 | 0.617 | 0.609 | 7.90 | ac2227a88d56431d8b6094bd1d7e1b40 |
+| C | `augmentation.enabled` = `true` | 0.654 | 0.642 | 7.92 | b5cb8063b75940d08b91b98b226a8262 |
+
+**Engineering checkpoint 6** All metrics are sorted in the same order, but the good metric here would be `Macro-F1` because it helps keeping a good balance on results. 
+
+ 

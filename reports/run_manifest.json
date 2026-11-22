@@ -1,6 +1,6 @@
 {
   "configuration": {
-    "augmentation_enabled": false,
+    "augmentation_enabled": true,
     "batch_size": 32,
     "dropout": 0.3,
     "epochs": 4,
@@ -23,11 +23,11 @@
   },
   "execution": {
     "device": "cpu",
-    "mlflow_run_id": "ac903503e3134477b9c66a5c278c518a",
+    "mlflow_run_id": "b5cb8063b75940d08b91b98b226a8262",
     "random_state": 42
   },
   "git": {
-    "commit": "7905228b0de440b9a4241af885b73ceb25758ead",
+    "commit": "e574f612a8d978a952d13d00019762a483749db0",
     "dirty": true
   }
 }

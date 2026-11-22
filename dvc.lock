@@ -114,7 +114,7 @@ stages:
     params:
       params.yaml:
         augmentation:
-          enabled: false
+          enabled: true
           horizontal_flip: 0.5
           rotation_degrees: 10
         compute:
@@ -132,17 +132,17 @@ stages:
     outs:
     - path: models/model.pt
       hash: md5
-      md5: 20d168630857f87c4c90b1bd6d8782f8
+      md5: e91adef1b2276b8bf856afcfe311325b
       size: 98673
     - path: reports/run_manifest.json
       hash: md5
-      md5: 32f8e99f5de55fbe1b38343fa8800a0e
-      size: 800
+      md5: c53a1eff7655feca79b4b04e663e5260
+      size: 799
     - path: reports/train_summary.json
       hash: md5
-      md5: 8b4a088f0d523bd2de80bcc93eccec09
-      size: 245
+      md5: e7cc55037226f1cf057eaf8e14939da6
+      size: 247
     - path: reports/training_curves.png
       hash: md5
-      md5: 20f09794bdc6f664c4399349f5363982
-      size: 99052
+      md5: 24e5037ba6914046f28ff1358fcb8fea
+      size: 100425

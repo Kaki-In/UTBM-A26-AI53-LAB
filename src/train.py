@@ -7,6 +7,8 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import mlflow
+import mlflow.data
+import mlflow.models
 import pandas as pd
 import torch
 import yaml
@@ -58,14 +60,14 @@ def run_epoch(
             targets = targets.to(device)
 
             if training:
-                optimizer.zero_grad(set_to_none=True)
+                optimizer.zero_grad(set_to_none=True) #type:ignore
 
             logits = model(images)
             loss = criterion(logits, targets)
 
             if training:
                 loss.backward()
-                optimizer.step()
+                optimizer.step() #type:ignore
 
             total_loss += loss.item() * images.size(0)
             y_true.extend(targets.detach().cpu().tolist())
@@ -83,7 +85,7 @@ def run_epoch(
 def main() -> None:
     # MLflow prints Unicode symbols; DVC may capture stdout using a legacy Windows encoding.
     if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace") #type:ignore
     # =========================================================
     # 1. LOAD CONFIGURATION
     # =========================================================
@@ -166,6 +168,9 @@ def main() -> None:
         # -----------------------------------------------------
         # run_manifest = ...
         # training_identity = ...
+        
+        run_manifest = write_run_manifest(params, str(device), run.info.run_id, train_manifest_path)
+        training_identity = run_manifest["data"]["training_data_identity"]
 
         # -----------------------------------------------------
         # TODO 2 - LOG RUN PARAMETERS
@@ -176,6 +181,22 @@ def main() -> None:
         # rotation_degrees, device, training_data_identity.
         # -----------------------------------------------------
 
+        mlflow.log_params(
+            {
+                "image_size": int(params["data"]["image_size"]),
+                "batch_size": int(params["train"]["batch_size"]),
+                "epochs": epochs,
+                "learning_rate": float(params["train"]["learning_rate"]),
+                "dropout": float(params["train"]["dropout"]),
+                "random_state": seed,
+                "augmentation_enabled": bool(params["augmentation"]["enabled"]),
+                "horizontal_flip": params["augmentation"]["horizontal_flip"],
+                "rotation_degrees": params["augmentation"]["rotation_degrees"],
+                "device": str(device),
+                "training_data_identity": training_identity,
+            }
+        )
+        
         # -----------------------------------------------------
         # TODO 3 - LOG TRAINING DATASET INPUT
         # -----------------------------------------------------
@@ -183,6 +204,9 @@ def main() -> None:
         if "label" not in train_manifest_df.columns:
             raise ValueError("Training manifest must contain a 'label' column")
 
+        train_dataset = mlflow.data.from_pandas(train_manifest_df, name="bean-training", targets="label") #type:ignore
+        mlflow.log_input(train_dataset, context="training")
+        
         # Create an MLflow Dataset with mlflow.data.from_pandas(...):
         #   name    = "bean-training"
         #   targets = "label"
@@ -215,11 +239,13 @@ def main() -> None:
                 f"val_macro_f1={val_metrics['macro_f1']:.4f}"
             )
 
-            # TODO 4 - Log train_loss, val_loss,
-            # val_accuracy and val_macro_f1 with step=epoch.
+            mlflow.log_metric("train_loss", train_metrics["loss"], step=epoch)
+            mlflow.log_metric("val_loss", val_metrics["loss"], step=epoch)
+            mlflow.log_metric("val_accuracy", val_metrics["accuracy"], step=epoch)
+            mlflow.log_metric("val_macro_f1", val_metrics["macro_f1"], step=epoch)
 
         training_seconds = time.perf_counter() - start
-        # TODO 5 - Log training_seconds to MLflow.
+        mlflow.log_metric("training_seconds", training_seconds)
 
         # =====================================================
         # 8. CREATE LOCAL OUTPUTS
@@ -280,6 +306,10 @@ def main() -> None:
         # write_run_manifest(...) created it at the beginning of the Run.
         # Do NOT create the provenance manifest here.
 
+        mlflow.log_artifact("reports/training_curves.png")
+        mlflow.log_artifact("reports/train_summary.json")
+        mlflow.log_artifact("reports/run_manifest.json")
+
         # =====================================================
         # 10. LOG FINAL PYTORCH MODEL
         # =====================================================
@@ -295,6 +325,29 @@ def main() -> None:
         # the course eager BeanCNN. Import mlflow.pytorch and infer_signature.
         # Export a CPU model in evaluation mode with CPU examples.
         # Do not use the test set.
+
+        cpu_model = model.to("cpu")
+        cpu_model.eval()
+
+        input_images, _ = next(iter(val_loader))
+        input_example = input_images.to("cpu").numpy()
+        with torch.no_grad():
+            output_example = cpu_model(torch.from_numpy(input_example)).numpy()
+
+        signature = mlflow.models.infer_signature(input_example, output_example)
+
+        mlflow.pytorch.log_model( #type:ignore
+            cpu_model,
+            name="bean-cnn",
+            signature=signature,
+            input_example=input_example,
+            metadata={
+                "class_names": list(class_names),
+                "image_size": int(params["data"]["image_size"]),
+            },
+            serialization_format="pickle",
+            code_paths=["src"],
+        )
 
         print(
             "Training complete. Resolve every TODO block before "

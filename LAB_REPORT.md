@@ -60,4 +60,19 @@ We get the following schema :
   | train |         | evaluate |  
   +-------+         +----------+  
 ```
+## Milestone 5
+
+**Engineering point 4**
+
+ * Git : 
+
+Git helps tracking the code, and whether the workspace was clean or not when running the project. 
+
+* DVC : 
+
+DVC versions the data and defines the pipeline stages (dependencies/outputs), so it can tell which stages need to rerun.
+
+* MLflow
+
+MLflow records everything about each training execution: parameters, metrics, artifacts, the dataset used, and the final model.
 

@@ -137,5 +137,6 @@ Because it will simply train using rotations and flipping of the images, so the 
 | C | `augmentation.enabled` = `true` | 0.654 | 0.642 | 7.92 | b5cb8063b75940d08b91b98b226a8262 |
 
 **Engineering checkpoint 6** All metrics are sorted in the same order, but the good metric here would be `Macro-F1` because it helps keeping a good balance on results. 
+The test set should be used only after choosing a model because it validates the model output - which is useful only to view if our best model is performant. Others are generally worst. 
 
  

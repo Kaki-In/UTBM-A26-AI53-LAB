@@ -63,7 +63,7 @@ stages:
       - src/data.py
       - src/reproducibility.py
       - data/processed/test
-      - data/manifests
+      - data/processed/manifests
       - uv.lock
       - pyproject.toml
     params:

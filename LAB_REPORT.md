@@ -24,3 +24,40 @@ The Git remote stores source code and DVC tracking files, the DVC remote stores 
 
 ## Milestone 3
 
+*nothing to write*
+
+## Milestone 4
+
+`PREPARE` depends directly on `reports/data_quality.json` (the result of `validate`), but not on `data/raw` directly, because `validate` already ensures `data/raw` is available. Once the data is validated, `data/raw` is ready. 
+
+`TRAIN` must be updated for every change in the parameters, because each parameter influences the output of the task. 
+
+`EVALUATE` needs to evaluate the selected model - identified by `selection.run_id`. 
+
+The `metrics` provided to `DVC` are `reports/train_summary.json` and `reports/test_metrics.json` - the two files that actually provide real matric data. 
+
+We get the following schema : 
+```
+        +--------------+          
+        | data/raw.dvc |          
+        +--------------+          
+           **        **           
+         **            **         
+        *                **       
++----------+               *      
+| validate |             **       
++----------+           **         
+           **        **           
+             **    **             
+               *  *               
+           +---------+            
+           | prepare |            
+           +---------+            
+           **        **           
+         **            **         
+        *                *        
+  +-------+         +----------+  
+  | train |         | evaluate |  
+  +-------+         +----------+  
+```
+

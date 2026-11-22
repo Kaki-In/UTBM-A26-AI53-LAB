@@ -149,3 +149,23 @@ The best run, no matter the metric, is the C one.
 
 A limitation is that the problem here is very short, and the metrics precision is not optimal. 
 
+
+## FINAL HAND-IN
+
+```
+(ai53-bean-mlops-phase1) kaki@kaki-LOQ-15ARP9:~/Documents/UTBM/cours/AI53/TD/AI53_Phase1_Lab/AI53_MLOps_Project_Phase1_Starter$ git status
+Sur la branche main
+Votre branche est à jour avec 'origin/main'.
+
+rien à valider, la copie de travail est propre
+(ai53-bean-mlops-phase1) kaki@kaki-LOQ-15ARP9:~/Documents/UTBM/cours/AI53/TD/AI53_Phase1_Lab/AI53_MLOps_Project_Phase1_Starter$ uv run --locked dvc push --all-commits
+Collecting                                                                                                                          |32.8k [00:02, 12.4kentry/s]
+Pushing
+ERROR: unexpected error - [Errno 13] Permission denied: '/ai53-phase1-dvc-storage'                                                                              
+
+Having any troubles? Hit us up at https://dvc.org/support, we are always happy to help!
+```
+
+`uv run --locked dvc push` works correctly. 
+
+`uv` simply seems to have a bug because the configuration is correct

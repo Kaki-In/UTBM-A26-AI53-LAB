@@ -99,3 +99,34 @@ Row 3 — edit src/validate_data.py, report content unchanged:
 * TRAIN: REUSED — same logic one level further down the chain: nothing PREPARE produces changed, so TRAIN's dependencies are untouched.
 * EVALUATE: REUSED — same: its upstream inputs are unaffected.
 
+## Milestone 6
+
+| Check | VALIDATE | PREPARE | TRAIN | EVALUATE |
+|---|---|---|---|---|
+| Relancer sans rien changer | REUSED | REUSED | REUSED | NOT RUN |
+| Commentaire neutre dans `validate_data.py` | RERUN | REUSED | REUSED | NOT RUN |
+| Learning rate → 0.0003 (Run B) | REUSED | REUSED | RERUN | NOT RUN |
+
+Relevant lines :
+
+```
+'data/raw.dvc' didn't change, skipping
+Stage 'validate' didn't change, skipping
+Stage 'prepare' didn't change, skipping
+Running stage 'train':
+...
+```
+
+## Milestone 7
+
+I will simply change `augnmentation.enabled` to `true`. 
+
+I predict that : 
+1. The training will take longer
+2. The loss will decrease faster
+3. The accuracy will be better
+
+Because it will simply train using rotations and flipping of the images, so the model will be trained more and with more diverse data. 
+
+
+

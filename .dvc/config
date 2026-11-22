@@ -1,4 +1,4 @@
 [core]
     remote = lab-data
 ['remote "lab-data"']
-    url = ../../ai53-phase1-dvc-storage
+    url = /home/kaki/Documents/UTBM/cours/AI53/TD/AI53_Phase1_Lab/ai53-phase1-dvc-storage

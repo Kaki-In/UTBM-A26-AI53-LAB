@@ -146,3 +146,55 @@ stages:
       hash: md5
       md5: 24e5037ba6914046f28ff1358fcb8fea
       size: 100425
+  evaluate:
+    cmd: uv run --locked python -m src.evaluate
+    deps:
+    - path: data/processed/manifests
+      hash: md5
+      md5: db66a66ffea39b1ef381e62a89638e3c.dir
+      size: 259976
+      nfiles: 3
+    - path: data/processed/test
+      hash: md5
+      md5: b8bab51f720815a35f45f286e27502c9.dir
+      size: 637766
+      nfiles: 128
+    - path: pyproject.toml
+      hash: md5
+      md5: e648e5a0e6d5deb56529b84d5a92f886
+      size: 827
+    - path: src/data.py
+      hash: md5
+      md5: 68a3090573fc5afa12eb0db23eae24cd
+      size: 2196
+    - path: src/evaluate.py
+      hash: md5
+      md5: a62299e5e82bff9db3215d1e83aab62b
+      size: 6226
+    - path: src/reproducibility.py
+      hash: md5
+      md5: 5ea21f2d11bb71abc7dfbe2d3c5d8716
+      size: 1081
+    - path: uv.lock
+      hash: md5
+      md5: afd72528b6d3d31bcbf88c92b0545f40
+      size: 373304
+    params:
+      params.yaml:
+        compute:
+          device: auto
+        data.image_size: 96
+        evaluation.batch_size: 64
+        selection.run_id: b5cb8063b75940d08b91b98b226a8262
+        tracking:
+          uri: http://127.0.0.1:5000
+          experiment: bean-image-classification
+    outs:
+    - path: reports/test_confusion_matrix.png
+      hash: md5
+      md5: c83a7703b573c710355b1c30c74ea336
+      size: 96122
+    - path: reports/test_metrics.json
+      hash: md5
+      md5: deda7ec517f857472f143e713a46438f
+      size: 223
